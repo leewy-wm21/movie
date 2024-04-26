@@ -56,16 +56,20 @@ selected_movie = st.selectbox('Type a Movie', options=titles)
 if st.button('Recommend'):
     recommended_movie_names, recommended_movie_posters = recommender(selected_movie)
 
-    # Use containers to align elements
-    rows = 4  # Rows to hold 20 movies
-    cols_per_row = 5  # 5 movies per row
+    # Ensure clear alignment with containers and columns
+    num_movies = len(recommended_movie_names)
+    cols_per_row = 5  # 5 columns per row
 
-    for row in range(rows):
+    # Loop through the recommended movies and display in rows of 5
+    for i in range(0, num_movies, cols_per_row):
+        # Create a new container for each row
         with st.container():
+            # Define the columns for this row
             cols = st.columns(cols_per_row)
-            start_idx = row * cols_per_row
-            end_idx = start_idx + cols_per_row
-            for i, col in zip(range(start_idx, end_idx), cols):
-                if i < len(recommended_movie_names):
-                    col.text(recommended_movie_names[i])
-                    col.image(recommended_movie_posters[i])
+            for j in range(cols_per_row):
+                index = i + j
+                if index < num_movies:
+                    col = cols[j]
+                    col.text(recommended_movie_names[index])
+                    if recommended_movie_posters[index]:
+                        col.image(recommended_movie_posters[index], use_column_width=True)
