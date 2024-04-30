@@ -7,8 +7,9 @@ import requests
 # Load the data
 df = pd.read_csv('data.csv')
 titles = df['title'].values
+tags = df['tags'].values
 cv = CountVectorizer(max_features=5000, stop_words='english')
-vectors = cv.fit_transform(df['tags']).toarray()
+vectors = cv.fit_transform(tags).toarray()
 similarity = cosine_similarity(vectors)
 
 # API key for TMDB
@@ -33,11 +34,13 @@ def recommender(movie):
     movies_list = sorted(list(enumerate(distance)), reverse=True, key=lambda x: x[1])[1:11]
     recommended_titles = []
     recommended_posters = []
+    recommended_tags = []
     for i in movies_list:
         movie_id = df.iloc[i[0]]['movie_id']
         recommended_titles.append(df.iloc[i[0]]['title'])
         recommended_posters.append(fetch_poster(movie_id))
-    return recommended_titles, recommended_posters
+        recommended_tags.append(df.iloc[i[0]]['tags'])
+    return recommended_titles, recommended_posters, recommended_tags
 
 # Configure Streamlit
 st.set_page_config(layout="wide")
@@ -50,17 +53,16 @@ hide_streamlit_style = """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 st.title('⋅˚₊‧ ଳ⋆.ೃ࿔*:･+˚JELLY\'s MOVIE RECOMMENDER⋅˚₊‧ ଳ⋆.ೃ࿔*:･')
+
 selected_movie = st.selectbox('Type a Movie', options=titles)
 
 # Display recommended movies and posters when the button is clicked
 if st.button('Recommend'):
-    recommended_movie_names, recommended_movie_posters = recommender(selected_movie)
+    recommended_movie_names, recommended_movie_posters, recommended_movie_tags = recommender(selected_movie)
 
-    # Ensure clear alignment with containers and columns
     num_movies = len(recommended_movie_names)
     cols_per_row = 5  # 5 columns per row
 
-    # Loop through the recommended movies and display in rows of 5
     for i in range(0, num_movies, cols_per_row):
         with st.container():
             cols = st.columns(cols_per_row)
@@ -68,12 +70,12 @@ if st.button('Recommend'):
                 index = i + j
                 if index < num_movies:
                     col = cols[j]
-                    col.text(recommended_movie_names[index])
                     if recommended_movie_posters[index]:
-                        # Use an expander to create a collapsible section with movie details
-                        with col.expander(f"Click to see details"):
-                            # Left part: movie poster
+                        # Image and text for each movie
+                        col.image(recommended_movie_posters[index], use_column_width=True)
+                        col.text(recommended_movie_names[index])
+                        # Create an expander to show additional information when clicked
+                        with col.expander(f"More Info"):
                             st.image(recommended_movie_posters[index], use_column_width=True)
-                            # Right part: movie title and tags
                             st.markdown(f"### {recommended_movie_names[index]}")
                             st.write(f"Tags: {recommended_movie_tags[index]}")
