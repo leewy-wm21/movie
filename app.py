@@ -30,7 +30,7 @@ def fetch_poster(movie_id):
 def recommender(movie):
     movie_index = df[df['title'] == movie].index[0]
     distance = similarity[movie_index]
-    movies_list = sorted(list(enumerate(distance)), reverse=True, key=lambda x: x[1])[1:21]
+    movies_list = sorted(list(enumerate(distance)), reverse=True, key=lambda x: x[1])[1:11]
     recommended_titles = []
     recommended_posters = []
     for i in movies_list:
