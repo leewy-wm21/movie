@@ -49,7 +49,7 @@ hide_streamlit_style = """
             """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
-st.title('⋅˚₊‧ ଳ⋆.ೃ࿔*:･⋅˚₊‧ ଳ⋆.ೃ࿔*:･JELLY\'s MOVIE RECOMMENDER⋅˚₊‧ ଳ⋆.ೃ࿔*:･')
+st.title('⋅˚₊‧ ଳ⋆.ೃ࿔*:･+˚JELLY\'s MOVIE RECOMMENDER⋅˚₊‧ ଳ⋆.ೃ࿔*:･')
 selected_movie = st.selectbox('Type a Movie', options=titles)
 
 # Display recommended movies and posters when the button is clicked
