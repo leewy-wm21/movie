@@ -78,4 +78,4 @@ if st.button('Recommend'):
                         with col.expander(f"More Info"):
                             st.image(recommended_movie_posters[index], use_column_width=True)
                             st.markdown(f"### {recommended_movie_names[index]}")
-                            st.write(f"Tags: {recommended_movie_tags[index]}")
+                            st.write(f"{recommended_movie_tags[index]}")
