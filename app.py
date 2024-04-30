@@ -61,10 +61,8 @@ if st.button('Recommend'):
     cols_per_row = 5  # 5 columns per row
 
     # Loop through the recommended movies and display in rows of 5
-    for i in range(0, num_movies, cols_per_row):
-        # Create a new container for each row
+     for i in range(0, num_movies, cols_per_row):
         with st.container():
-            # Define the columns for this row
             cols = st.columns(cols_per_row)
             for j in range(cols_per_row):
                 index = i + j
@@ -72,4 +70,10 @@ if st.button('Recommend'):
                     col = cols[j]
                     col.text(recommended_movie_names[index])
                     if recommended_movie_posters[index]:
-                        col.image(recommended_movie_posters[index], use_column_width=True)
+                        # Use an expander to create a collapsible section with movie details
+                        with col.expander(f"Click to see details"):
+                            # Left part: movie poster
+                            st.image(recommended_movie_posters[index], use_column_width=True)
+                            # Right part: movie title and tags
+                            st.markdown(f"### {recommended_movie_names[index]}")
+                            st.write(f"Tags: {recommended_movie_tags[index]}")
