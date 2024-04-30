@@ -58,7 +58,7 @@ if st.button('Recommend'):
 
     # Ensure clear alignment with containers and columns
     num_movies = len(recommended_movie_names)
-    cols_per_row = 4  # 5 columns per row
+    cols_per_row = 5  # 5 columns per row
 
     # Loop through the recommended movies and display in rows of 5
     for i in range(0, num_movies, cols_per_row):
